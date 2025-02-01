@@ -1,41 +1,59 @@
 import { createContext, useEffect, useState } from "react";
 import "./App.css";
-import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "./Utility/axios.js";
-import AppRouter from "./routes/AppRouter.jsx";
+import Home from "./pages/Home/Home";
 
-export const UserState = createContext(); // Create a context for the user data
+import { Route, Routes, useNavigate } from "react-router-dom";
+import axios from "./Api/axiosConfig";
+import Landing from "./pages/Landing/Landing";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Ask from "./pages/Ask/Ask";
+import Answer from "./pages/Answer/Answer";
+import HowItWorks from "./pages/HowItWorks/HowItWorks";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import EditQuestion from "./pages/Ask/EditQuestion";
+
+export const AppState = createContext();
+import "./i18ntest";
 
 function App() {
   const [user, setUser] = useState({});
+  const token = localStorage.getItem("token");
+
   const navigate = useNavigate();
 
-  const getUserData = async () => {
+  async function checkUser() {
     try {
-      const token = localStorage.getItem("EV-Forum-token-G3-APR2024"); // Get the token stored during login from local storage
-      if (!token) {
-        navigate("/auth");
-      }
-
-      const userData = await axiosInstance
-        .get("/user/check", { headers: { Authorization: "Bearer " + token } })
-        .then((response) => response.data);
-      console.log(userData);
-      setUser(userData); // Store the user data in state so that it can be accessed by others too
+      const { data } = await axios.get("/users/checkUser", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      setUser(data);
     } catch (error) {
-      console.log(error);
-      navigate("/auth");
+      console.log(error.response);
+      navigate("/");
     }
-  };
+  }
 
   useEffect(() => {
-    getUserData();
+    checkUser();
   }, []);
 
   return (
-    <UserState.Provider value={{ user, setUser }}>
-      <AppRouter />
-    </UserState.Provider>
+    <AppState.Provider value={{ user, setUser }}>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/ask" element={<Ask />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/question/:questionid" element={<Answer />} />
+        <Route path="/edit-question/:questionId" element={<EditQuestion />} />
+        <Route path="*" element={() => <h1>Page not found</h1>} />
+      </Routes>
+      <Footer />
+    </AppState.Provider>
   );
 }
 

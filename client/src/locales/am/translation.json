@@ -1,0 +1,137 @@
+{
+  "answer": {
+    "questionTitle": "ጥያቄ",
+    "loadingQuestion": "ጥያቄን በመጫን ላይ......",
+    "communityAnswers": "ከማህበረሰቡ የተሰጠ መልስ",
+    "noAnswers": "እስካሁን መልስ የለም።",
+    "successMessage": "በተሳካ ሁኔታ ተልኳል! ወደ መነሻ ገጽ ተመልሰው እየተመለሱ ነው...",
+    "alertMissingAnswer": "እባኮትን መልስ ያስፈልጋል።",
+    "placeholderAnswer": "መልስዎ ...",
+    "postButton": "መልስ ይላኩ"
+  },
+
+  "ask": {
+    "instructionsTitle": "ጥሩ ጥያቄ ለመጻፍ ደረጃዎች።",
+    "step1": "ጥያቄዎችዎን በአንድ መስመር ርዕስ ውስጥ ያጠቃልሉ።",
+    "step2": "ጥያቄዎን በበለጠ ዝርዝር ይግለጹ።",
+    "step3": "የሞከሩትን እና የጠበቁትን ይግለጽ።",
+    "step4": "ጥያቄዎን ይገምግሙ እና እዚህ ይለጥፉ።",
+    "postQuestionTitle": "ጥያቄዎን ይላኩ",
+    "successMessage": "በተሳካ ሁኔታ ተልኳል! ወደ መነሻ ገጽ ተመልሰው እየተመለሱ ነው...",
+    "alertMissingInfo": "እባኮትን ሁሉም ያስፈልጋል ዝርዝር ይሞሉ።",
+    "placeholderTitle": "የጥያቄ ርዕስ",
+    "placeholderDetails": "የጥያቄ ዝርዝር...",
+    "postButton": "ጥያቄ ይላኩ"
+  },
+
+  "home": {
+    "username": "አርእስተ ስም",
+    "title": "ርእስ",
+    "timestamp": "የጊዜ ምልክት",
+    "actions": "እርምጃዎች",
+    "askQuestion": "ጥያቄ ይጠይቁ",
+    "welcome": "እንኳን ደህና መጡ",
+    "searchPlaceholder": "በጥያቄ ወይም በተጠቃሚ ስም ይፈልጉ",
+    "noQuestions": "ምንም ጥያቄዎች አልተገኙም።",
+    "edit": "አርትዖት",
+    "delete": "አስወግድ",
+    "confirmDelete": "እባኮትን፣ ይህን ጥያቄ ለማስወገድ እርግጠኛ ነነዎት?",
+    "deleteSuccess": "ጥያቄው በተሳካ ሁኔታ ተሰርዟል።",
+    "deleteError": "ለማስወገድ ጥያቄው ማስተካከል አልተቻለም።",
+    "invalidDate": "የተሳሳተ ቀን",
+    "saveChanges": "ለማሻሻል ለእርስዎ ቀረበ",
+    "editSuccess": "በማሻሻል ሳምንት ተሳካ",
+    "editError": "ማሻሻል አልተቻለም",
+    "editQuestion": "ጥያቄን አርትዕ",
+    "errorFetchingQuestion": "ጥያቄውን ማግኘት አልተሳካም። እባኮትን እንደገና ይሞክሩ።",
+    "errorUpdatingQuestion": "ጥያቄውን ማሻሻል አልተሳካም። እባኮትን እንደገና ይሞክሩ።",
+    "errorDeletingQuestion": "ጥያቄውን ማጥፋት አልተሳካም። እባኮትን እንደገና ይሞክሩ።",
+    "deleteQuestion": "ጥያቄን አጥፋ",
+    "updateQuestion": "ጥያቄን አሻሽል",
+    "description": "መግለጫ",
+    "confirmUpdate": "ይህንን ጥያቄ ለመቀየር እርግጠኛ ነዎት?",
+    "questionUpdatedSuccessfully": "ጥያቄው በስኬት ተሻሻለ",
+    "yesDelete": "አዎ አስወግድ",
+    "cancel": "ማቋረጥ",
+    "postedOn": "በተለጠፈበት",
+    "mostRecent": "የቅርቡ የተመዘገበ",
+    "mostPopular": "በጣም ታዋቂ",
+    "byQuestions": "በጥያቄዎች",
+    "byDate": "በቀን",
+    "showComments": "እባኮትን ግምቶችን እንደሚገኙ"
+  },
+
+  "nav": {
+    "home": "መነሻ",
+    "howItWorks": "እንዴት እንደሚሰራ",
+    "signIn": "መግቢያ",
+    "signOut": "ውጣ",
+    "language": "ቋንቋ"
+  },
+  "languages": {
+    "english": "እንግሊዝኛ",
+    "amharic": "አማርኛ"
+  },
+
+  "landing": {
+    "about": "ስለ እኛ",
+    "title": "Evangadi Networks",
+    "description1": "በማንኛውም አይነት የህይወት ደረጃ ላይ ቢሆኑ፣ ገና አንደኛ ደረጃ ት/ቤት እየጀመሩ ይሁን ስኬታማ የሆነ 500 ኩባንያ ዋና ስራ አስፈፃሚ በመሆን ቢያድጉ፣ የእርሶን ፈለግ ለመከተል ለሚጥሩ ብዙ ሊሰትጡ ይችላሉ።",
+    "description2": "እውቀቶን ለማካፈል ፍቃደኛ ከሆኑ ወይም ከአማካሪዎች ጋር ለመገናኘት የሚፈልጉ ከሆነ እባኮትን  አውታረ መረቡን እዚህ  በመቀላቀል ይጀምሩ።",
+    "howItWorksButton": "እንዴት እንደሚሰራ"
+  },
+  "register": {
+    "joinNetwork": "ኔትወርኩን  ይቀላቀሉ",
+    "alreadyAccount": "አስቀድሞ መለያ አሎት? ",
+    "signIn": "ይግቡ",
+    "placeholders": {
+      "username": "የተጠቃሚ ስም",
+      "firstname": "የመጀመሪያ ስም",
+      "lastname": "የአያት ስም",
+      "email": "ኢሜል አድራሻ",
+      "password": "ፓስወርድ"
+    },
+    "agree": "እስማማለሁ: በግላዊነት ፖሊሲ እና በአገልግሎት ውል እስማማለሁ።",
+    "submit": "ተስማምተህ ተቀላቀል"
+  },
+  "login": {
+    "loginHeading": "እባኮትን ወደ መለያዎ ይግቡ",
+    "noAccount": "መለያ የለዎትም?",
+    "errorTitle": "የጎደሉ መረጃዎች",
+    "createAccount": "እዚህ ይመዝገቡ",
+    "failureTitle": "መግባት አልተሳካም!",
+    "successTitle": "መግባት ተሳክቷል!",
+    "success": "እንኳን ደህና መጡ!",
+    "placeholders": {
+      "email": "ኢሜል አድራሻ",
+      "password": "የሚስጥር ቃል",
+      "emptyFields": "እባኮትን ሁሉንም የሚያስፈልጉትን መረጃዎች ያስገቡ",
+      "failure": "መግባት አልተሳካም!",
+      "success": "እንኳን ደህና መጡ!",
+      "welcome": "እንኳን ደህና መጡ!"
+    },
+
+    "forgotPassword": "የይለፍ ቃል ረስተዋል?",
+    "loginButton": "ግባ",
+    "error": "እባኮትን ሁሉንም የሚያስፈልጉትን መረጃዎች ያስገቡ",
+    "failure": "እባኮትን መረጃዎን ያረጋግጡ"
+  },
+
+  "forgotPassword": {
+    "errorTitle": "የማስተካከያ ነገር ተሳክቷል",
+    "error": "እባክዎ ኢሜልዎን ያስገቡ።",
+    "successTitle": "ዳግም ማስጀመር ተሳክቷል",
+    "heading": "የይለፍ ቃል ረስተዋል?",
+    "instructions": "የይለፍ ቃል ለማስተካከል ኢሜልዎን ያስገቡ።",
+    "emptyEmail": "እባኮትን ኢሜልዎን ያስገቡ.",
+    "successMessage": "የይለፍ ቃል ዳግም ማስጀመሪያ መመሪያዎች ወደ ኢሜልዎ ተልኳል.",
+    "placeholders": {
+      "email": "ኢሜል ያስገቡ"
+    },
+    "success": "የይለፍ ቃል መልስዳግም ማስጀመሪያ መመሪያዎች ወደ ኢሜል ተልኳል። ኢሜልዎን ያስረግጡ።",
+    "resetButton": "የይለፍ ቃልን ዳግም ለማስተካከል",
+    "backToLogin": "ወደ መግቢያ ተመለስ",
+    "failure": "ጥያቄዎን ማቀርብ አልቻልንም። እባክዎ እንደገና ይሞክሩ። እባኮትን እንደገና ይሞክሩ።",
+    "failureTitle": "መግባት አልተሳካም"
+  }
+}

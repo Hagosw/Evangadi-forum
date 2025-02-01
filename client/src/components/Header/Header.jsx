@@ -1,74 +1,128 @@
-import  { useContext } from "react";
-import classes from "./header.module.css";
-import EvangadiLogo from "../../Assets/Images/evangadi-logo-header.png";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, Button, Container } from "react-bootstrap";
-import { UserState } from "../../App.jsx";
+import React, { useContext, useState } from "react";
+import "./header.css";
+import headerLogo from "../../assets/images/EvangadiLogo.png";
+import { AppState } from "../../App";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function Header() {
-  const {user}=useContext(UserState);
-  const userId = user?.userid;
+  const token = localStorage.getItem("token");
+  const { t, i18n } = useTranslation();
 
-  const handleSignOut = () => {
-    localStorage.removeItem("EV-Forum-token-G3-APR2024"); //remove the auth token
-    window.location.replace("/auth"); //redirect to auth page so that user can login again
+  let [smallScreenLogout, setSmallScreenLogout] = useState(false);
+
+  let navigate = useNavigate();
+  let { user, setUser } = useContext(AppState);
+
+  function logoutHandler() {
+    localStorage.setItem("token", "");
+    setUser("");
+    navigate("/");
+    window.location.reload();
+  }
+
+  // hamMenuHandler function: called when the hamburger menu (on small screens) is clicked
+  function hamMenuHandler() {
+    if (user) setSmallScreenLogout(!smallScreenLogout); // Toggle the visibility of the logout button on small screens
+  }
+
+  function signinHandler() {
+    window.location.reload();
+  }
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
   };
-
-
 
   return (
     <>
-      <Navbar bg="light " variant="light" expand="md" className="px-3" style={{position:"sticky", top:"0", zIndex:"3", backgroundColor:"white", borderBottom:"1px solid #dee2e6"}}>
-        <Container className={classes.header_container}>
-          <Navbar.Brand href="/">
-            <img
-              src={EvangadiLogo}
-              className="d-inline-block align-top"
-              alt="Evangadi Logo"
-              width="200"
-            />
+      <Navbar
+        bg="light"
+        expand="lg"
+        className="py-3 shadow-lg position-sticky w-100 "
+        style={{
+          zIndex: "99",
+          top: "0",
+        }}
+      >
+        <Container>
+          <Navbar.Brand href="/home">
+            <img src={headerLogo} alt="" />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav  d-md-none">
-            <span className="navbar-toggler-icon"></span>
-          </Navbar.Toggle>
-          <Navbar.Collapse id="basic-navbar-nav" className=" w-50 flex-md-row" style={{alignSelf:"flex-end"}}>
-            <Nav className="flex-column flex-md-row w-100 justify-content-end nav-links-holder">
-              {
-                userId ? (
-                  <Nav.Link as={Link} to="/" className={classes.navigation_links}>
-                  Home
-                </Nav.Link>
-                ) : null
-              }
+          <Navbar.Toggle
+            aria-controls={`offcanvasNavbar-expand-lg`}
+          ></Navbar.Toggle>
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand-lg`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
+            placement="end"
+          >
+            <Offcanvas.Body>
+              <Nav className="justify-content-end flex-grow-1 ">
+                {token && (
+                  <Nav.Item>
+                    <Nav.Link as={Link} to="/home">
+                      {t("nav.home")}
+                    </Nav.Link>
+                  </Nav.Item>
+                )}
+                <Nav.Item>
+                  <Nav.Link as={Link} to="/how-it-works">
+                    {t("nav.howItWorks")}
+                  </Nav.Link>
+                </Nav.Item>
 
-              <Nav.Link
-                as={Link}
-                to="/howitworks"
-                className={classes.navigation_links}
-              >
-                How it Works
-              </Nav.Link>
-           {
-             userId ? (
-               <Button
-                 onClick={handleSignOut}
-                 className={classes.logout_btn}
-               >
-                 Logout
-               </Button>
-             ) : (
-               <Nav.Link
-                 as={Link}
-                 to="/auth"
-                 className={`${classes.navigation_links} ${classes.login_btn}`}
-               >
-                 Login
-               </Nav.Link>
-             )
-           }
-            </Nav>
-          </Navbar.Collapse>
+                {token && (
+                  <h6
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    className="fw-bold py-2 px-3 c-pointer"
+                    onClick={logoutHandler}
+                  >
+                    {t("nav.signOut")}
+                  </h6>
+                )}
+              </Nav>
+
+              {/* Sign in button */}
+              {!token && (
+                <Nav.Item>
+                  <Link to={"/"}>
+                    <Button
+                      onClick={signinHandler}
+                      className="px-5"
+                      variant="primary"
+                    >
+                      {t("nav.signIn")}
+                    </Button>
+                  </Link>
+                </Nav.Item>
+              )}
+
+              {/* Language switcher */}
+              <Dropdown>
+                <Dropdown.Toggle variant="outline-secondary" id="language-menu">
+                  🌐 {t("nav.language")}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => changeLanguage("en")}>
+                    {t("languages.english")}
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeLanguage("am")}>
+                    {t("languages.amharic")}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
         </Container>
       </Navbar>
     </>
@@ -76,3 +130,4 @@ function Header() {
 }
 
 export default Header;
+

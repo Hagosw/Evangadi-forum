@@ -1,6 +1,5 @@
-
 .form {
-    text-align: center;
+  text-align: center;
   width: 50%;
   padding: 20px 30px;
   box-sizing: border-box;
@@ -21,10 +20,12 @@
   border-radius: 5px;
   font-size: 14px;
 }
-.form input:focus{
+
+.form input:focus {
   outline: none;
   border-bottom: 3px solid #ff6600;
 }
+
 .form button {
   width: 100%;
   padding: 10px;
@@ -51,33 +52,12 @@
   cursor: pointer;
 }
 
-form a{
-color: #ff6600;
+form a {
+  color: #ff6600;
 }
 
 .errorMessage {
   color: red;
   font-size: 14px;
   margin-top: 10px;
-}
-
-.passwordField {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.passwordField input {
-  flex: 1;
-}
-
-.eyeIcon {
-  position: absolute;
-  right: 10px;
-  cursor: pointer;
-  color: #666;
-}
-
-.eyeIcon:hover {
-  color: #000;
 }

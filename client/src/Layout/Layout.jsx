@@ -1,6 +1,10 @@
-import Header from '../components/Header/Header.jsx'
-import Footer from '../components/Footer/Footer.jsx'
+import React from "react";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 
+
+
+// export default Layout;
 function Layout({children}) {
   return (
     <div>
@@ -14,3 +18,4 @@ function Layout({children}) {
 }
 
 export default Layout
+

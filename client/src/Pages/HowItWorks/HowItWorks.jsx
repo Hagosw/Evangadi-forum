@@ -1,82 +1,101 @@
-import  { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./HowItWorks.module.css";
-import Layout from "../../Layout/Layout.jsx";
-import { UserState } from "../../App.jsx";
+import React from "react";
+import classes from "./HowItWorks.module.css";
 
 const HowItWorks = () => {
-  const { user } = useContext(UserState);
-  const userId = user?.userid;
-
   return (
-    <Layout>
-      <div className={styles.container}>
-        <div className={styles.inner_container}>
-          <h2 className={styles.title}>Purpose of the Platform</h2>
-          <p className={styles.description}>
-            The site’s purpose is to foster collaborative learning among
-            students by enabling them to ask questions, answer peers, and review
-            responses. It creates an interactive platform where students can
-            share knowledge, support each other, and enhance their understanding
-            through discussion and feedback.
+    <section className={classes.container}>
+      <div className={classes.content}>
+        <h1 className={classes.heading}>How it works</h1>
+
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Introduction</h2>
+          <p>
+            Welcome to <strong>EVANGADI FORUM</strong>, a platform where
+            technology enthusiasts connect, share, and solve problems
+            collaboratively. Our forum is designed to help you find answers,
+            contribute your knowledge, and engage with a community of
+            like-minded individuals.
           </p>
+        </section>
 
-          <div className={styles.steps}>
-            <div className={styles.step}>
-              <h3>User Authentication</h3>
-              <p>
-                Students begin by creating an account to access all features of
-                the platform. This allows them to access different questions and
-                answers. they can ask question and also collaborate for other
-                questions by answering them.
-              </p>
-            </div>
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Creating an Account</h2>
+          <p>
+            To become a member of our community, please click the "Sign Up"
+            button located at the top right of the page. Enter your email
+            address, select a username, and create a password. You will receive
+            a confirmation email to activate your account.
+          </p>
+        </section>
 
-            <div className={styles.step}>
-              <h3>Q&A Features</h3>
-              <p>
-                Once registered, students can post questions related to their
-                academic challenges or queries, providing a space for others to
-                help.
-                <br />
-                Students also can browse existing questions and contribute by
-                providing their answers, offering insights, solutions, or
-                guidance.
-              </p>
-            </div>
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Exploring Categories</h2>
+          <p>Our forum is organized into various categories. These include:</p>
+          <ul className={classes.list}>
+            <li>
+              Categories displaying questions asked by other forum members.
+            </li>
+            <li>Pages with detailed views of individual questions.</li>
+            <li>Areas where you can post your own questions.</li>
+          </ul>
+          <p>
+            Use the navigation bar to access the home page and to log out from
+            the forum.
+          </p>
+        </section>
 
-            <div className={styles.step}>
-              <h3>Review Answers</h3>
-              <p>
-                After reviewing the answers, students can rate them, helping to
-                highlight the best responses and improve the overall quality of
-                the platform.
-              </p>
-            </div>
-          </div>
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Searching for Questions</h2>
+          <p>
+            If you are seeking specific questions, utilize the search bar
+            located at the top right of the home page. Enter relevant keywords
+            to find threads and posts that match your query.
+          </p>
+        </section>
 
-          <div className="parentContainer">
-            {userId ? (
-              <>{null}</>
-            ) : (
-              <div className={styles.buttonContainer}>
-                <Link to={"/auth"}>
-                  <button className={styles.signupButton}>
-                    Join us Sign Up Now
-                  </button>
-                </Link>
-                <span>
-                  Already have an account?
-                  <Link to="/auth" className={styles.login}>
-                    Login
-                  </Link>
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Posting a New Question</h2>
+          <p>
+            To post a new question, provide a clear and descriptive title, and
+            include a detailed explanation of your question or topic. Click
+            "Post" to submit your inquiry.
+          </p>
+        </section>
+
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Replying to a Question</h2>
+          <p>
+            To respond to a question, open the specific question you are
+            interested in and type your response in the text box provided. Click
+            "Post Answer" to share your insights or provide a solution.
+          </p>
+        </section>
+
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Community Guidelines</h2>
+          <p>
+            To ensure a positive experience for all members, please adhere to
+            our community guidelines. Be respectful, avoid spam, and contribute
+            constructively to discussions.
+          </p>
+        </section>
+
+        <section className={classes.section}>
+          <h2 className={classes.subHeading}>Contact and Support</h2>
+          <p>
+            For additional information, please visit our Evangadi Networks page
+            or contact our support team via the Contact Info section located at
+            the bottom of the page. We are here to assist you with any questions
+            or concerns you may have.
+          </p>
+        </section>
+
+        <p className={classes.closingMessage}>
+          We are excited to have you join our community! Dive in, share your
+          knowledge, and enjoy the discussions. Happy posting!
+        </p>
       </div>
-    </Layout>
+    </section>
   );
 };
 
