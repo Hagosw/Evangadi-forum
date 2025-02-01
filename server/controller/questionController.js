@@ -1,107 +1,143 @@
-const dbConnection = require("../db/dbConfig");
-const crypto = require("crypto");
+const dbConection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
-const KeywordExtractor = require("keyword-extractor");
 
-const generateTag = (title) => {
-  const extractionResult = KeywordExtractor.extract(title, {
-    language: "english",
-    remove_digits: true,
-    return_changed_case: true,
-    remove_duplicates: true,
-  });
-  return extractionResult.length > 0 ? extractionResult[0] : "general";
-};
-
-async function postQuestion(req, res) {
+async function ask(req, res) {
   const { title, description } = req.body;
 
-  // Check for missing items
   if (!title || !description) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      error: "Please provide all required fields!",
-    });
-  }
-
-  try {
-    // get userid from user
-    const { userid } = req.user;
-
-    // get a unique identifier for questionid so two questions do not end up having the same id. crypto built in node module.
-    const questionid = crypto.randomBytes(16).toString("hex");
-
-    const tag = generateTag(title);
-
-    // Insert question into database
-    await dbConnection.query(
-      "INSERT INTO questions ( userid, questionid, title, description, tag, created_at) VALUES (?,?,?,?,?,?)",
-      [userid, questionid, title, description, tag, new Date()]
-    );
-
-    return res.status(201).json({
-      message: "Question created successfully",
-    });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "An unexpected error occurred.",
-    });
-  }
-}
-
-async function getAllQuestion(req, res) {
-  try {
-    // GEt all questions from the database
-    const [questions] = await dbConnection.execute(
-      "SELECT q.*,u.username FROM questions q JOIN users u ON q.userid = u.userid ORDER BY created_at DESC"
-    );
-    //check if the questions array is empty
-    if (questions.length === 0) {
-      return res.status(404).json({ message: "No questions fround." });
-    }
-
-    return res.status(StatusCodes.OK).json(questions);
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "An unexpected error occurred", error: error });
-  }
-}
-
-// Controller to get a single question by ID
-async function getSingleQuestion(req, res) {
-  const { question_id } = req.params;
-  console.log(question_id);
-
-  if (!question_id) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Invalid question ID" });
+      .json({ msg: "Please provide all the required information." });
   }
 
   try {
-    // Query the database to get the question details
-    const [question] = await dbConnection.execute(
-      "SELECT * FROM questions WHERE questionid = ?",
-      [question_id]
+    const userid = req.user.userid;
+
+    await dbConection.query(
+      "INSERT INTO questions (questionid, userid, title, description) VALUES (UUID(), ?, ?, ?)",
+      [userid, title, description]
     );
 
-    // If no question found, return 404
-    if (question.length === 0) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ msg: "Question not found" });
-    }
-
-    // Return the question details
-    return res.status(StatusCodes.OK).json({ question: question[0] });
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ msg: "Question created successfully." });
   } catch (error) {
-    console.error(error.message);
+    console.error("Error during question creation:", error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "An unexpected error occurred" });
+      .json({ msg: "An unexpected error occurred." });
   }
 }
 
-module.exports = { postQuestion, getAllQuestion, getSingleQuestion };
+async function getAllQuestions(req, res) {
+  try {
+    const [questions] = await dbConection.query(
+      "SELECT q.questionid, q.title, q.description, u.username, q.created_at FROM questions q JOIN users u ON q.userid = u.userid ORDER BY q.created_at DESC"
+    );
+
+    if (questions.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No questions found." });
+    }
+
+    return res.status(StatusCodes.OK).json({ questions });
+  } catch (error) {
+    console.error("Error during fetching questions:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "An unexpected error occurred." });
+  }
+}
+
+async function getSingleQuestion(req, res) {
+  const { questionid } = req.params;
+
+  try {
+    const [[question]] = await dbConection.query(
+      "SELECT q.*, u.username FROM questions q JOIN users u ON q.userid = u.userid WHERE q.questionid = ?",
+      [questionid]
+    );
+
+    if (!question) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Question not found." });
+    }
+
+    return res.status(StatusCodes.OK).json({ question });
+  } catch (error) {
+    console.error("Error during fetching single question:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "An unexpected error occurred." });
+  }
+}
+
+const editQuestion = async (req, res) => {
+  const { questionid } = req.params; // Extract question ID from route
+  const { title, description } = req.body; // Extract updated data
+  const userid = req.user.userid; // Get the user ID from the authenticated request
+
+  if (!title || !description) {
+    return res
+      .status(400)
+      .json({ msg: "Please provide title and description." });
+  }
+
+  try {
+    const [result] = await dbConection.query(
+      "UPDATE questions SET title = ?, description = ? WHERE questionId = ? AND userid = ?",
+      [title, description, questionid, userid]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(403).json({
+        msg: "You are not authorized to edit this question or it doesn't exist.",
+      });
+    }
+
+    return res.status(200).json({ msg: "Question updated successfully." });
+  } catch (error) {
+    console.log("Error updating question:", error.message);
+    return res
+      .status(500)
+      .json({ msg: "Failed to update question.", error: error.message });
+  }
+};
+
+const deleteQuestion = async (req, res) => {
+  const { questionid } = req.params;
+  const { userid } = req.user;
+
+  try {
+    const [result] = await dbConection.query(
+      "DELETE FROM questions WHERE questionid = ? AND userid = ?",
+      [questionid, userid]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        msg: "You are not authorized to delete this question or it doesn't exist.",
+      });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Question deleted successfully." });
+  } catch (error) {
+    console.error("Error during question deletion:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Failed to delete question." });
+  }
+};
+
+module.exports = {
+  ask,
+  getAllQuestions,
+  getSingleQuestion,
+  editQuestion,
+  deleteQuestion,
+};
+

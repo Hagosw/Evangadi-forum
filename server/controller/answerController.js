@@ -1,85 +1,63 @@
-const dbConnection = require("../db/dbConfig");
-const { StatusCodes } = require("http-status-codes"); //https status codes
+const dbConection = require("../db/dbConfig");
+const { StatusCodes } = require("http-status-codes");
 
-// Get answers by question id
+async function getAnswer(req,res) {
 
-async function getAnswersByQuestionId(req, res) {
-  // Get question id from the request parameters
-  const  questionId  = req.params.question_id;
+  const questionid = req.params.questionid;
   
+    try {
+      const [answers] = await dbConection.query(
+        "SELECT a.answerid, a.answer, u.username, a.created_at FROM answers a JOIN users u ON a.userid = u.userid WHERE a.questionid =?",
+        [questionid]
+      );
+      // console.log(answers);
 
-  // console.log("questionId:", questionId)
+      if (answers.length == 0) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: "No answers found." });
+      }
 
-  // Check if question id is present in the request parameters
-  if (!questionId) {
-    return res.status(400).json({ error: "Question id is required" });
-  }
+      return res.status(StatusCodes.OK).json({ answers: answers });
 
-  // Query to get answers by question id
-  try {
-    // Get answers by question id by using parameterized query to prevent SQL injection attacks
-    const [answers] = await dbConnection.execute(
-      "SELECT a.answerid AS answer_id, a.answer AS content, u.username AS user_name, a.created_at AS created_at FROM answers a JOIN users u ON a.userid = u.userid WHERE a.questionid =?",
-      [questionId]
-    );
-
-    // console.log(answers)
-
-    // Check if there are any answers for the given question id
-    if (answers.length === 0) {
-      return res.status(404).json({
-        error: "Not Found",
-        message: "The requested question could not be found.",
-      });
+    } catch (error) {
+      console.log(error.message);
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ msg: "An unexpected error occurred." });
     }
-
-    // Return the answers
-    return res.status(200).json({ answers });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      error: "Internal Server Error",
-      message: "An unexpected error occurred.",
-    });
-  }
 }
 
+async function postAnswer(req,res) {
 
-const postAnswerForQuestion = async (req, res) => {
-  const { questionid, answer } = req.body;
+    const { answer, questionid } = req.body;
 
-  console.log("Question ID:", questionid);
-  console.log("Answer:", answer);
+    if (!answer) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "Please provide answer" });
+    }
+    try {
 
-  if (!questionid || !answer) {
-    return res.status(400).json({
-      error: "Bad Request",
-      message: "Please provide both question ID and answer.",
-    });
-  }
+      const userid = req.user.userid;
 
-  try {
-    const createdBy = req.user.userid;
+      await dbConection.query(
+        "INSERT INTO answers (userid,questionid,answer) VALUES (?,?,?)",
+        [userid, questionid, answer]
+      );
 
-    await dbConnection.execute(
-      "INSERT INTO answers (questionid, userid, answer) VALUES (?, ?, ?)",
-      [questionid, createdBy, answer]
-    );
+      return res
+        .status(StatusCodes.CREATED)
+        .json({ msg: "Answer posted successfully" });
 
-    return res.status(201).json({ message: "Answer posted successfully" });
-  } catch (error) {
-    console.error("Error posting answer:", error);
-    return res.status(500).json({
-      error: "Internal Server Error",
-      message: "An unexpected error occurred.",
-    });
-  }
-};
+    } catch (error) {
 
+      console.log(error.message);
 
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ msg: "An unexpected error occurred." });
+    }
+}
 
-// Exporting the functions
-module.exports = {
-  getAnswersByQuestionId,
-  postAnswerForQuestion,
-};
+module.exports = { getAnswer, postAnswer };
